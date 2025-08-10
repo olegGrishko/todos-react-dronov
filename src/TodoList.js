@@ -15,6 +15,7 @@ export default function TodoList(props) {
                                     className="button is-success"
                                     title="Пометить как сделанное"
                                     disabled={item.done}
+                                    onClick={(e) => props.setDone(item.key)}
                                 >
                                     &#9745;
                                 </button>
