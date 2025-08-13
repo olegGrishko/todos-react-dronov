@@ -2,6 +2,7 @@ import { Component } from 'react';
 import TodoList from './TodoList';
 import TodoAdd from './TodoAdd';
 import { HashRouter, Routes, Route, NavLink } from 'react-router-dom';
+import TodoDetail from './TodoDetail';
 
 const date1 = new Date(2021, 7, 19, 14, 5);
 const date2 = new Date(2021, 7, 19, 15, 23);
@@ -59,6 +60,11 @@ export default class App extends Component {
     this.setState((state) => ({ showMenu: !state.showMenu }));
   }
 
+  getDeed(key) {
+    key = +key;
+    return this.state.data.find((current) => current.key === key);
+  }
+
   render() {
     return (
       <HashRouter>
@@ -108,6 +114,9 @@ export default class App extends Component {
             } />
             <Route path='/add' element={
               <TodoAdd add={this.add} />
+            } />
+            <Route path='/:key' element={
+              <TodoDetail getDeed={this.getDeed} />
             } />
           </Routes>
         </main>
