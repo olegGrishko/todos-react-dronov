@@ -1,13 +1,18 @@
 import { Link } from 'react-router-dom';
 
 export default function TodoList(props) {
+    {/*
+        props.list.map((item) => (
+            console.log(item.key))
+        );
+        */}
     return (
         <section>
             <h1>Дела</h1>
             <table className="table is-hoverable is-fullwidth">
                 <tbody>
                     {props.list.map((item) => (
-                        <tr key={item.key}>
+                        <tr key={item.key} >
                             <td>
                                 <Link to={`/${item.key}`}>
                                     {item.done && <del>{item.title}</del>}
@@ -37,6 +42,6 @@ export default function TodoList(props) {
                     ))}
                 </tbody>
             </table>
-        </section>
+        </section >
     );
 }

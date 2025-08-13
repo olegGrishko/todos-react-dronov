@@ -1,8 +1,16 @@
 import { useParams } from "react-router-dom";
 
 export default function TodoDetail(props) {
+
     const { key } = useParams();
+    console.log(props.getDeed(key));
     const deed = props.getDeed(key);
+
+
+    // Проверяем наличие данных
+    if (!deed) {
+        return <section>Задача не найдена или загружается...</section>;
+    }
 
     return (
         <section>

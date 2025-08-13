@@ -34,6 +34,8 @@ export default class App extends Component {
     this.delete = this.delete.bind(this);
     this.add = this.add.bind(this);
     this.showMenu = this.showMenu.bind(this);
+    this.getDeed = this.getDeed.bind(this);
+    console.log(this.state);
   }
 
   setDone(key) {
@@ -115,7 +117,7 @@ export default class App extends Component {
             <Route path='/add' element={
               <TodoAdd add={this.add} />
             } />
-            <Route path='/:key' element={
+            <Route path="/:key" element={
               <TodoDetail getDeed={this.getDeed} />
             } />
           </Routes>
