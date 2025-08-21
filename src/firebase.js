@@ -11,9 +11,11 @@ const firebaseConfig = {
     storageBucket: "todos2-e8c59.firebasestorage.app",
     messagingSenderId: "292490362700",
     appId: "1:292490362700:web:4636306a85a0a5556a19e9",
-    databaseURL: "https://console.firebase.google.com/project/todos2-e8c59/database/todos2-e8c59-default-rtdb/data/~2F"
+    databaseURL: "https://todos2-e8c59-default-rtdb.europe-west1.firebasedatabase.app"
 };
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
+
+
 export default firebaseApp;

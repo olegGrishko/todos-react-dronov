@@ -1,8 +1,8 @@
 import { Component } from "react";
 import { Navigate } from "react-router-dom";
-import { register } from './api';
+import { login } from './api';
 
-export default class Register extends Component {
+export default class Login extends Component {
     constructor(props) {
         super(props);
         this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -28,7 +28,7 @@ export default class Register extends Component {
 
     async handleFormSubmit(evt) {
         evt.preventDefault();
-        const result = await register(this.formData.email, this.formData.password);
+        const result = await login(this.formData.email, this.formData.password);
         if (typeof result !== 'object')
             console.log(result);
     }
@@ -39,7 +39,7 @@ export default class Register extends Component {
         else
             return (
                 <section>
-                    <h1>Регистрация</h1>
+                    <h1>Вход</h1>
                     <form onSubmit={this.handleFormSubmit}>
                         <div className="field">
                             <label className="label">Адрес электронной почты</label>
@@ -64,7 +64,7 @@ export default class Register extends Component {
                             <div className="control">
                                 <input type="submit"
                                     className="button is-primary"
-                                    value="Зарегистрироваться" />
+                                    value="Войти" />
                             </div>
                         </div>
                     </form>

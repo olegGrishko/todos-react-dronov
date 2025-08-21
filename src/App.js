@@ -6,34 +6,17 @@ import TodoDetail from './TodoDetail';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Register from './Register';
 import firebaseApp from './firebase';
-
-const date1 = new Date(2021, 7, 19, 14, 5);
-const date2 = new Date(2021, 7, 19, 15, 23);
-
-const initialData = [
-  {
-    title: 'Изучить React',
-    desc: 'Да поскорее!',
-    image: '',
-    done: true,
-    createdAt: date1.toLocaleString(),
-    key: date1.getTime()
-  },
-  {
-    title: 'Написать первое React-приложение',
-    desc: 'Список запланированных дел',
-    image: '',
-    done: false,
-    createdAt: date2.toLocaleString(),
-    key: date2.getTime()
-  },
-];
+import Logout from './Logout';
+import Login from './Login';
+import { getList } from './api';
+import { setDone } from './api';
+import { del } from './api';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: initialData,
+      data: [],
       showMenu: false,
       currentUser: undefined
     };
@@ -46,14 +29,16 @@ export default class App extends Component {
     this.authStateChanged = this.authStateChanged.bind(this);
   }
 
-  setDone(key) {
+  async setDone(key) {
+    await setDone(this.state.currentUser, key);
     const deed = this.state.data.find((current) => current.key === key);
     if (deed)
       deed.done = true;
     this.setState((state) => ({}));
   }
 
-  delete(key) {
+  async delete(key) {
+    await del(this.state.currentUser, key);
     const newData = this.state.data.filter(
       (current) => current.key !== key
     );
@@ -71,12 +56,16 @@ export default class App extends Component {
   }
 
   getDeed(key) {
-    key = +key;
     return this.state.data.find((current) => current.key === key);
   }
 
-  authStateChanged(user) {
-    this.setState((state) => ({ currentUser: user }))
+  async authStateChanged(user) {
+    this.setState((state) => ({ currentUser: user }));
+    if (user) {
+      const newData = await getList(user);
+      this.setState((state) => ({ data: newData }));
+    } else
+      this.setState((state) => ({ data: [] }));
   }
 
   componentDidMount() {
@@ -126,6 +115,15 @@ export default class App extends Component {
                 </NavLink>
               )}
               {!this.state.currentUser && (
+                <NavLink to="/login"
+                  className={({ isActive }) =>
+                    'navbar-item' + (isActive ? ' is-active' : '')
+                  }
+                >
+                  Войти
+                </NavLink>
+              )}
+              {!this.state.currentUser && (
                 <NavLink to="/register"
                   className={({ isActive }) =>
                     'navbar-item' + (isActive ? ' is-active' : '')
@@ -136,6 +134,17 @@ export default class App extends Component {
               )}
             </div>
           </div>
+          {this.state.currentUser && (
+            <div className='navbar-end'>
+              <NavLink to="/logout"
+                className={({ isActive }) =>
+                  'navbar-item' + (isActive ? ' is-active' : '')
+                }
+              >
+                Выйти
+              </NavLink>
+            </div>
+          )}
         </nav>
         <main className='content px-6 mt-6'>
           <Routes>
@@ -145,13 +154,20 @@ export default class App extends Component {
                 delete={this.delete} />
             } />
             <Route path='/add' element={
-              <TodoAdd add={this.add} />
+              <TodoAdd add={this.add}
+                currentUser={this.state.currentUser} />
             } />
             <Route path="/:key" element={
               <TodoDetail getDeed={this.getDeed} />
             } />
             <Route path="/register" element={
               <Register currentUser={this.state.currentUser} />
+            } />
+            <Route path="/logout" element={
+              <Logout currentUser={this.state.currentUser} />
+            } />
+            <Route path="/login" element={
+              <Login currentUser={this.state.currentUser} />
             } />
           </Routes>
         </main>
