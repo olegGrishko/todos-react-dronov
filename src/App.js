@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import TodoList from './TodoList';
 import TodoAdd from './TodoAdd';
-import { HashRouter, Routes, Route, NavLink } from 'react-router-dom';
+import { HashRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom';
 import TodoDetail from './TodoDetail';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Register from './Register';
@@ -151,14 +151,16 @@ export default class App extends Component {
             <Route path='/' element={
               <TodoList list={this.state.data}
                 setDone={this.setDone}
-                delete={this.delete} />
+                delete={this.delete}
+                currentUser={this.state.currentUser} />
             } />
             <Route path='/add' element={
               <TodoAdd add={this.add}
                 currentUser={this.state.currentUser} />
             } />
             <Route path="/:key" element={
-              <TodoDetail getDeed={this.getDeed} />
+              <TodoDetail getDeed={this.getDeed}
+                currentUser={this.state.currentUser} />
             } />
             <Route path="/register" element={
               <Register currentUser={this.state.currentUser} />
